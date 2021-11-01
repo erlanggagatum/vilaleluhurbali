@@ -42,16 +42,16 @@
                     <ul class="navbar-nav ms-auto">
                     <!-- <ul class="navbar-nav ms-auto mb-2 mb-lg-0"> -->
                         <li class="nav-item @if(strlen(Request::path())==1)active @endif">
-                            <a class="nav-link" href={{url("/")}}>Home</a>
+                            <a class="nav-link @if(strlen(Request::path())==1)active @endif" href={{url("/")}}>Home</a>
                         </li>
                         <li class="nav-item @if(str_contains(Request::path(),'book'))active @endif">
-                            <a class="nav-link" href={{url("/book")}}>Book</a>
+                            <a class="nav-link @if(str_contains(Request::path(),'book'))active @endif" href={{url("/book")}}>Book</a>
                         </li>
                         <li class="nav-item @if(str_contains(Request::path(),'features'))active @endif">
-                            <a class="nav-link" href={{url("/features")}}>Features</a>
+                            <a class="nav-link @if(str_contains(Request::path(),'features'))active @endif" href={{url("/features")}}>Features</a>
                         </li>
                         <li class="nav-item @if(str_contains(Request::path(),'contact'))active @endif">
-                            <a class="nav-link" href={{url("/contact-us")}}>Contact Us</a>
+                            <a class="nav-link @if(str_contains(Request::path(),'contact'))active @endif" href={{url("/contact-us")}}>Contact Us</a>
                         </li>
                     <!-- </ul> -->
                         <!-- Authentication Links -->
