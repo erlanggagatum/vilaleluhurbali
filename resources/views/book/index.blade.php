@@ -1,5 +1,6 @@
 @extends('layouts.app')
 
+
 @section('content')
 <div class="container mt-4">
     <h3 class='mt-3'>Book</h3>
@@ -19,8 +20,8 @@
 
     <!-- <div id="datepicker"></div> -->
 
-    <form method='get' action='/book/1/2'>
-    @csrf
+    <form method='get' action='/book/order/step2'>
+    <!-- @csrf -->
     <div class="row mt-3">
         <div class="col">
             <div class="mb-3">
@@ -51,6 +52,7 @@
             <input type="text" class="form-control" id="checkoutDate" name='checkoutDate' readonly>
         </div>
         </div>
+        <input type="text" name="idvilla" id="idvilla" value='{{$idvilla}}' class="form-control" hidden>
     </div>
 
     <div class="mb-3">

@@ -15,7 +15,7 @@ class BookController extends Controller
     public function index()
     {
         //
-        return view('book.index');
+        return redirect('/book/1');
     }
 
     /**
@@ -50,22 +50,26 @@ class BookController extends Controller
         // return view('book.index', ['name' => 'Samantha']);
         //
         if($id == 1){
-            return view('book.index', ['name' => 'Villa 1']);
+            return view('book.index', ['name' => 'Villa 1', 'idvilla' => 1]);
         }
         if($id == 2){
-            return view('book.index', ['name' => 'Villa 2']);
+            return view('book.index', ['name' => 'Villa 2', 'idvilla' => 2]);
         }
         if($id == 3){
-            return view('book.index', ['name' => 'Villa 3']);
+            return view('book.index', ['name' => 'Villa 3', 'idvilla' => 3]);
+        }
+        if($id == 4){
+            return view('book.index', ['name' => 'Villa 3', 'idvilla' => 3]);
         }
         else {
-            return view('book.index', ['name' => 'Villa 4']);
+            return redirect('/book/1');
         }
     }
 
 
-    public function secondStep(Request $request, $id){
+    public function secondStep(Request $request){
         // hanya user yang sudah login boleh akses 2nd step
+        // dd('disini');
         if(!Auth::user()){
             return redirect('/login');
         }
@@ -73,11 +77,33 @@ class BookController extends Controller
         $start = $request->checkinDate;
         $nights = $request->selectNight;
         $end = $request->checkoutDate;
+        $idvilla = $request->idvilla;
+
         return view('book.secondstep',[
-            'name' => 'Villa '.$id,
+            // 'name' => 'Villa '.$id,
             'start' => $start,
             'end' => $end,
             'nights' => $nights,
+            'idvilla' => $idvilla,
+        ]);
+    }
+
+    public function finalStep(Request $request){
+        if(!Auth::user()){
+            return redirect('/login');
+        }
+
+        $start = $request->checkinDate;
+        $nights = $request->selectNight;
+        $end = $request->checkoutDate;
+        $idvilla = $request->idvilla;
+
+        return view('book.finalstep',[
+            // 'name' => 'Villa '.$id,
+            'start' => $start,
+            'end' => $end,
+            'nights' => $nights,
+            'idvilla' => $idvilla,
         ]);
     }
 
