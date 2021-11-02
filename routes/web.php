@@ -14,9 +14,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home.home');
 });
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+// book
+Route::get('/book', [App\Http\Controllers\BookController::class, 'index'])->name('book');
+Route::get('/book/{id}', [App\Http\Controllers\BookController::class, 'show'])->name('book.villa1');
+Route::get('/book/order/step2', [App\Http\Controllers\BookController::class, 'secondStep'])->name('book.step2');
+Route::post('/book/order/final', [App\Http\Controllers\BookController::class, 'finalStep'])->name('book.final');

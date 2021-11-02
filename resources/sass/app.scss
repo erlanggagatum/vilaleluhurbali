@@ -4,5 +4,12 @@
 // Variables
 @import 'variables';
 
+@import '~bootstrap/scss/functions';    
+@import '~bootstrap/scss/variables';    
+
+$theme-colors: (
+  primary: $teal-800
+);
+
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
