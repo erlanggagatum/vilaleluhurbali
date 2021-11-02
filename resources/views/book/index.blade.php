@@ -19,7 +19,8 @@
 
     <!-- <div id="datepicker"></div> -->
 
-    <form action='/book/1/1'>
+    <form method='get' action='/book/1/2'>
+    @csrf
     <div class="row mt-3">
         <div class="col">
             <div class="mb-3">
@@ -33,7 +34,7 @@
         <div class="col">
         <div class="mb-3">
         <label for="selectNight" class="form-label">Stay</label>
-        <select class="form-select" name='selectNight'aria-label="Default select example">
+        <select class="form-select" id='stay' name='selectNight'aria-label="Default select example">
             <option value='1' selected>1 Night</option>
             <option value="2">2 Night</option>
             <option value="3">3 Night</option>
@@ -47,13 +48,21 @@
         <div class="col">
         <div class="mb-3">
             <label for="checkoutDate" class="form-label">Check-out</label>
-            <input type="text" class="form-control" id="checkoutDate" name='checkoutDate' disabled>
+            <input type="text" class="form-control" id="checkoutDate" name='checkoutDate' readonly>
         </div>
         </div>
     </div>
 
+    <div class="mb-3">
+
+    <h4>Total</h4>
+    <p>Rp200.000,00,- x 4 nights</p>
+    <p>Total: <b>Rp800.000,00,-</b></p>
+    </div>
+    
     <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+
 
     
 </div>
@@ -63,18 +72,33 @@
 <script>
 
     $(function() {
+        function getStands(){
+            var stands = $('#stay').val();
+            return stands;
+        }
         $(".datepicker").datepicker({
             dateFormat: "yy-mm-dd",
             autoClose: true,
         });
+
         $("#checkinDate").on('change',function(){
-            var selDate = $(this).val();
-            // alert(selDate.split("/")[0])
-            var d = new Date(selDate.split("/")[2],selDate.split("/")[0]-1,selDate.split("/")[1])
-            // var d = new Date(2021)
-            alert(d)
-            $('#checkoutDate').val(selDate)
+            renderCheckout();
         });
+
+        $("#stay").on('change',function(){
+            renderCheckout();
+        });
+
+        function renderCheckout(){
+            var selDate = $("#checkinDate").val();
+            var d = new Date(selDate.split("/")[2],selDate.split("/")[0]-1,selDate.split("/")[1])
+            var stands = parseInt(getStands())
+            
+            // alert(stands)
+            d.setDate(d.getDate() + stands);
+            var outDateString = (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear()
+            $('#checkoutDate').val(outDateString)
+        }
     });
 
 </script>

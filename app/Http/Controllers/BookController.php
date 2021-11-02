@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BookController extends Controller
 {
@@ -60,6 +61,24 @@ class BookController extends Controller
         else {
             return view('book.index', ['name' => 'Villa 4']);
         }
+    }
+
+
+    public function secondStep(Request $request, $id){
+        // hanya user yang sudah login boleh akses 2nd step
+        if(!Auth::user()){
+            return redirect('/login');
+        }
+
+        $start = $request->checkinDate;
+        $nights = $request->selectNight;
+        $end = $request->checkoutDate;
+        return view('book.secondstep',[
+            'name' => 'Villa '.$id,
+            'start' => $start,
+            'end' => $end,
+            'nights' => $nights,
+        ]);
     }
 
     /**
