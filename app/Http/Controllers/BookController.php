@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Book;
+use App\Models\User;
+use App\Models\Villa;
 
 class BookController extends Controller
 {
@@ -78,6 +81,7 @@ class BookController extends Controller
         $nights = $request->selectNight;
         $end = $request->checkoutDate;
         $idvilla = $request->idvilla;
+        // dd($idvilla);
 
         return view('book.secondstep',[
             // 'name' => 'Villa '.$id,
@@ -93,18 +97,30 @@ class BookController extends Controller
             return redirect('/login');
         }
 
-        $start = $request->checkinDate;
-        $nights = $request->selectNight;
-        $end = $request->checkoutDate;
-        $idvilla = $request->idvilla;
+        // dd(User::find(1)->books[0]->status);
 
-        return view('book.finalstep',[
-            // 'name' => 'Villa '.$id,
-            'start' => $start,
-            'end' => $end,
-            'nights' => $nights,
-            'idvilla' => $idvilla,
-        ]);
+        $start = date('Y-m-d',strtotime($request->checkinDate));
+        $nights = explode(' ',$request->selectNight)[0];
+        $end = date('Y-m-d',strtotime($request->checkoutDate));
+        $idvilla = $request->idvilla;
+        $iduser = Auth::user()->id;
+        // dd($start,$end);
+        // dd($request->idvilla);
+
+        $book = new Book();
+        $book->start_date = $start;
+        $book->end_date = $end;
+        $book->status = "Sent to admin";
+        $book->status_detail = "Your order is being confirmed by admin. Please wait until admin contacted your number for confirmation";
+        $book->user_id = $iduser;
+        $book->villa_id = $idvilla;
+        $book->nights = $nights;
+
+        $book->save();
+
+
+
+        return view('book.finalstep');
     }
 
     /**
