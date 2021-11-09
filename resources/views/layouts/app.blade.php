@@ -45,6 +45,8 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                     <!-- <ul class="navbar-nav ms-auto mb-2 mb-lg-0"> -->
+                        @if(!Auth::user())
+                        @if((Auth::user()->role == 'customer'))
                         <li class="nav-item @if(strlen(Request::path())==1)active @endif">
                             <a class="nav-link @if(strlen(Request::path())==1)active @endif" href={{url("/")}}>Home</a>
                         </li>
@@ -57,6 +59,18 @@
                         <li class="nav-item @if(str_contains(Request::path(),'contact'))active @endif">
                             <a class="nav-link @if(str_contains(Request::path(),'contact'))active @endif" href={{url("/contact-us")}}>Contact Us</a>
                         </li>
+                        @else
+                        <li class="nav-item @if(str_contains(Request::path(),'dashboard'))active @endif">
+                            <a class="nav-link @if(str_contains(Request::path(),'dashboard'))active @endif" href={{url("/admin/dashboard")}}>Dashboard</a>
+                        </li>
+                        <li class="nav-item @if(str_contains(Request::path(),'ongoing'))active @endif">
+                            <a class="nav-link @if(str_contains(Request::path(),'ongoing'))active @endif" href={{url("/admin/ongoing")}}>Ongoing Orders</a>
+                        </li>
+                        <li class="nav-item @if(str_contains(Request::path(),'history'))active @endif">
+                            <a class="nav-link @if(str_contains(Request::path(),'history'))active @endif" href={{url("/admin/history")}}>History</a>
+                        </li>
+                        @endif
+                        @endif
                     <!-- </ul> -->
                         <!-- Authentication Links -->
                         @guest
@@ -79,9 +93,13 @@
                                 </a>
 
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    @if((Auth::user()!=null))
+                                    @if((Auth::user()->role == 'customer'))
                                     <li>
                                         <a href="{{url('track-order')}}" class="dropdown-item">My Order</a>
                                     </li>
+                                    @endif
+                                    @endif
                                     <li>
                                         <a class="dropdown-item" href="{{ route('logout') }}"
                                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

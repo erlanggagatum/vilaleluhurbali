@@ -1,6 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BookController;
+
+use Illuminate\Support\Facades\Auth;
+
+// Admin\ Controller
+use App\Http\Controllers\HistoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +28,17 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // book
-Route::get('/book', [App\Http\Controllers\BookController::class, 'index'])->name('book');
-Route::get('/book/{id}', [App\Http\Controllers\BookController::class, 'show'])->name('book.villa1');
-Route::get('/book/order/step2', [App\Http\Controllers\BookController::class, 'secondStep'])->name('book.step2');
-Route::post('/book/order/final', [App\Http\Controllers\BookController::class, 'finalStep'])->name('book.final');
+Route::get('/book', [BookController::class, 'index'])->name('book');
+Route::get('/book/{id}', [BookController::class, 'show'])->name('book.villa1');
+Route::get('/book/order/step2', [BookController::class, 'secondStep'])->name('book.step2');
+Route::post('/book/order/final', [BookController::class, 'finalStep'])->name('book.final');
+
+
+// admin
+Route::group(['prefix'=>'admin', 'as'=>'admin.', 'middleware'=>'admin'] ,function () {
+    // Route::get('/dashboard', [BookController::class,'index'])->name('book');
+    // Route::get('/order', [BookController::class,'index'])->name('book');
+
+    
+    Route::get('/history', [HistoryController::class,'index'])->name('history');
+});
