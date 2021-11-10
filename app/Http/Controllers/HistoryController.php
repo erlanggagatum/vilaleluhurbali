@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Book;
 
 class HistoryController extends Controller
 {
@@ -13,8 +14,14 @@ class HistoryController extends Controller
      */
     public function index()
     {
+        // dd(Book::all());'
+        
+        // dd(Book::all()[0]->user()->first_name);
+        // dd(Book::all()[0]->getUser()->first_name);
         //
-        return view('history.index');
+        return view('history.index',[
+            'books' => Book::all(), 
+        ]);
     }
 
     /**

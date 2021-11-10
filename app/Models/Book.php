@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class Book extends Model
 {
@@ -29,5 +30,7 @@ class Book extends Model
         return $this->belongsTo(Villa::class);
     }
 
-    
+    public function getUser() {
+        return User::findOrFail($this->user_id);
+    }
 }
