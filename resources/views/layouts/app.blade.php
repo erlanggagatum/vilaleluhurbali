@@ -17,6 +17,9 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
+    <!-- DATATABLE -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.3/datatables.min.css"/>
+ 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
@@ -82,7 +85,7 @@
                                     @if((Auth::user()!=null))
                                     @if((Auth::user()->role == 'customer'))
                                     <li>
-                                        <a href="{{url('track-order')}}" class="dropdown-item">My Order</a>
+                                        <a href="{{url('my-books')}}" class="dropdown-item">My Order</a>
                                     </li>
                                     @endif
                                     @endif
@@ -109,6 +112,8 @@
         </main>
     </div>
 </body>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.3/datatables.min.js"></script>
+
 
 <script type="text/javascript" src="{{asset('plugin\datepicker\dist\js\bootstrap-datepicker.js')}}"></script>  
 

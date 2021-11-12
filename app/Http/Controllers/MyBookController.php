@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
+use App\Models\Book;
 
-class MyOrderController extends Controller
+class MyBookController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +15,12 @@ class MyOrderController extends Controller
      */
     public function index()
     {
+        $books = Book::where('user_id', Auth::user()->id)->get();
+        // dd($books);
         //
+        return view('mybook.index',[
+            'books' => $books,
+        ]);
     }
 
     /**

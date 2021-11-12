@@ -77,10 +77,26 @@ class BookController extends Controller
             return redirect('/login');
         }
 
+        
+
+        // validation
+        $validate = $request->validate([
+            'checkinDate'=>'required|date',
+            'selectNight'=>'required',
+            'checkoutDate'=>'required|date',
+            'idvilla'=>'required',
+        ]);
+
         $start = $request->checkinDate;
         $nights = $request->selectNight;
         $end = $request->checkoutDate;
         $idvilla = $request->idvilla;
+
+        // cari tanggal tabrakan
+        $booked = Book::whereBetween('start_date', [$start,$end])->count();
+        dd($booked);
+
+
         // dd($idvilla);
 
         return view('book.secondstep',[

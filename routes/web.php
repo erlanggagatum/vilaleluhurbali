@@ -1,14 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BookController;
 
 use Illuminate\Support\Facades\Auth;
+
+// User controller
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\MyBookController;
+
 
 // Admin\ Controller
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\OngoingController;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -35,7 +38,7 @@ Route::get('/book/order/step2', [BookController::class, 'secondStep'])->name('bo
 Route::post('/book/order/final', [BookController::class, 'finalStep'])->name('book.final');
 
 // mybook
-
+Route::get('/my-books', [MyBookController::class, 'index'])->name('mybook');
 
 // admin
 Route::group(['prefix'=>'admin', 'as'=>'admin.', 'middleware'=>'admin'] ,function () {
