@@ -47,20 +47,15 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
-                    <!-- <ul class="navbar-nav ms-auto mb-2 mb-lg-0"> -->
-                        <li class="nav-item @if(strlen(Request::path())==1)active @endif">
-                            <a class="nav-link @if(strlen(Request::path())==1)active @endif" href={{url("/")}}>Home</a>
+                        <li class="nav-item @if(str_contains(Request::path(),'dashboard'))active @endif">
+                            <a class="nav-link @if(str_contains(Request::path(),'dashboard'))active @endif" href={{url("/admin/dashboard")}}>Dashboard</a>
                         </li>
-                        <li class="nav-item @if(str_contains(Request::path(),'book'))active @endif">
-                            <a class="nav-link @if(str_contains(Request::path(),'book'))active @endif" href={{url("/book")}}>Book</a>
+                        <li class="nav-item @if(str_contains(Request::path(),'ongoing'))active @endif">
+                            <a class="nav-link @if(str_contains(Request::path(),'ongoing'))active @endif" href={{url("/admin/ongoing")}}>Ongoing Orders</a>
                         </li>
-                        <li class="nav-item @if(str_contains(Request::path(),'features'))active @endif">
-                            <a class="nav-link @if(str_contains(Request::path(),'features'))active @endif" href={{url("/features")}}>Features</a>
+                        <li class="nav-item @if(str_contains(Request::path(),'history'))active @endif">
+                            <a class="nav-link @if(str_contains(Request::path(),'history'))active @endif" href={{url("/admin/history")}}>History</a>
                         </li>
-                        <li class="nav-item @if(str_contains(Request::path(),'contact'))active @endif">
-                            <a class="nav-link @if(str_contains(Request::path(),'contact'))active @endif" href={{url("/contact-us")}}>Contact Us</a>
-                        </li>
-                    <!-- </ul> -->
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
@@ -85,7 +80,7 @@
                                     @if((Auth::user()!=null))
                                     @if((Auth::user()->role == 'customer'))
                                     <li>
-                                        <a href="{{url('my-books')}}" class="dropdown-item">My Order</a>
+                                        <a href="{{url('track-order')}}" class="dropdown-item">My Order</a>
                                     </li>
                                     @endif
                                     @endif
@@ -114,8 +109,9 @@
 </body>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.3/datatables.min.js"></script>
 
-
 <script type="text/javascript" src="{{asset('plugin\datepicker\dist\js\bootstrap-datepicker.js')}}"></script>  
 
 @yield('script')
 </html>
+
+

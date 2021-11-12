@@ -5,10 +5,10 @@
 <div class="container mt-4">
     <h3 class='mt-3'>Book</h3>
     <div class="row">
-        <div class="col text-center"><a href="{{url('/book/1')}}" role="button" class="btn btn-primary d-block">Villa 1</a></div>
-        <div class="col text-center"><a href="{{url('/book/2')}}" role="button" class="btn btn-primary d-block">Villa 2</a></div>
-        <div class="col text-center"><a href="{{url('/book/3')}}" role="button" class="btn btn-primary d-block">Villa 3</a></div>
-        <div class="col text-center"><a href="{{url('/book/4')}}" role="button" class="btn btn-primary d-block">Villa 4</a></div>
+        <div class="col text-center"><a href="{{url('/book/1')}}" role="button" class="btn @if(str_contains(Request::path(),'1'))active @endif btn-outline-primary d-block">Villa 1</a></div>
+        <div class="col text-center"><a href="{{url('/book/2')}}" role="button" class="btn @if(str_contains(Request::path(),'2'))active @endif btn-outline-primary d-block">Villa 2</a></div>
+        <div class="col text-center"><a href="{{url('/book/3')}}" role="button" class="btn @if(str_contains(Request::path(),'3'))active @endif btn-outline-primary d-block">Villa 3</a></div>
+        <div class="col text-center"><a href="{{url('/book/4')}}" role="button" class="btn @if(str_contains(Request::path(),'4'))active @endif btn-outline-primary d-block">Villa 4</a></div>
     </div>
     
     
@@ -28,7 +28,7 @@
             <label for="checkinDate" class="form-label">Check-in</label>
             <input type="text" class="form-control datepicker" id="checkinDate" name='checkinDate'aria-describedby="date">
                 <div id="date" class="form-text">
-                Date format: mm/dd/yyyy
+                Date format: mm/dd/yyyy @error('checkinDate') <span class="badge bg-warning text-black">Please Choose Date</span>@enderror
                 </div>
         </div>
         </div>
@@ -58,8 +58,8 @@
     <div class="mb-3">
 
     <h4>Total</h4>
-    <p>Rp200.000,00,- x 4 nights</p>
-    <p>Total: <b>Rp800.000,00,-</b></p>
+    <p>Rp2.000.000,00,- x <span id='num_nights'>0</span> nights</p>
+    <p>Total: <b>Rp<span id='total_price'>0</span>,00,-</b></p>
     </div>
     
     <button type="submit" class="btn btn-primary">Submit</button>
