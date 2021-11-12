@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 // Admin\ Controller
 use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\OngoingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,4 +42,9 @@ Route::group(['prefix'=>'admin', 'as'=>'admin.', 'middleware'=>'admin'] ,functio
 
     
     Route::get('/history', [HistoryController::class,'index'])->name('history');
+    
+    // Ongoing
+    Route::get('/ongoing', [OngoingController::class,'index'])->name('ongoing');
+    Route::get('/ongoing/{id}', [OngoingController::class,'show'])->name('ongoing');
+
 });
