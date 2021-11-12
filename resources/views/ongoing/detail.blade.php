@@ -2,9 +2,25 @@
 
 @section('content')
 <div class="container mt-4">
+    
     <h3 class='mt-3'>Booking Summary for Villa xx
     </h3>
+
+    @if($msg = Session::get('success'))  
+    <div class="alert bg-success alert-dismissible fade show" role="alert">
+        <strong>Data Saved!</strong> {{$msg}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
     
+    @elseif($msg = Session::get('warning'))
+    <div class="alert bg-warning alert-dismissible fade show" role="alert">
+        <strong>Warning!</strong> {{$msg}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
+
+
+
     <div class="mt-3">
         <h5><b>
             Status
@@ -87,6 +103,7 @@
         </div>
 
     </div>
+    </form>
 
     <div class="mb-3">
 
@@ -94,9 +111,29 @@
     <p>Rp200.000,00,- x 4 nights</p>
     <p>Total: <b>Rp800.000,00,-</b></p>
     </div>
+    <div class='my-3'>
+        <form action="{{url('/admin/ongoing/update', $book->id)}}" method='post'>
+            @csrf
+            <!-- <div class="form-check"> -->
+                <input class="form-check-input" name='security_checkbox' type="checkbox" value="" id="security_checkbox">
+                <label class="form-check-label" for="security_checkbox">
+                @if($book->status == 'Sent to admin')
+                    I have confirmed the book with the respective customer
+                @elseif($book->status == 'Waiting for payment')
+                    I have confirmed the book's payment with the respective customer
+                @elseif($book->status == 'Waiting for checkin')
+                    I have confirmed that the customer has arrived and stayed at the villa
+                @endif
+                </label>
+            <!-- </div>/ -->
+            
+            <div class="my-3">
+            <button type="submit" class="btn btn-primary">Confirm Reservation</button>
+            </div>
+        </form>
+    </div>
     
-    <button type="submit" class="btn btn-primary">Confirm Reservation</button>
-    </form>
+
 
 
     

@@ -34,6 +34,8 @@ Route::get('/book/{id}', [BookController::class, 'show'])->name('book.villa1');
 Route::get('/book/order/step2', [BookController::class, 'secondStep'])->name('book.step2');
 Route::post('/book/order/final', [BookController::class, 'finalStep'])->name('book.final');
 
+// mybook
+
 
 // admin
 Route::group(['prefix'=>'admin', 'as'=>'admin.', 'middleware'=>'admin'] ,function () {
@@ -45,6 +47,7 @@ Route::group(['prefix'=>'admin', 'as'=>'admin.', 'middleware'=>'admin'] ,functio
     
     // Ongoing
     Route::get('/ongoing', [OngoingController::class,'index'])->name('ongoing');
-    Route::get('/ongoing/{id}', [OngoingController::class,'show'])->name('ongoing');
+    Route::get('/ongoing/{id}', [OngoingController::class,'show'])->name('ongoing.show');
+    Route::post('/ongoing/update/{id}', [OngoingController::class,'update'])->name('ongoing.update');
 
 });
