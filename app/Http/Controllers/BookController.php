@@ -50,8 +50,10 @@ class BookController extends Controller
      */
     public function show($id)
     {
+        // dd(Book::generateBookingNumber());
         // return view('book.index', ['name' => 'Samantha']);
         //
+
         if($id == 1){
             return view('book.index', ['name' => 'Villa 1', 'idvilla' => 1]);
         }
@@ -92,12 +94,17 @@ class BookController extends Controller
         $end = $request->checkoutDate;
         $idvilla = $request->idvilla;
 
-        // cari tanggal tabrakan
-        $booked = Book::whereBetween('start_date', [$start,$end])->count();
-        dd($booked);
 
+        $num_booked = Book::numberOfBook($start, $end, $nights, $idvilla);
+        if($num_booked != 0){
+            // return redirect(`book/$idvilla`)->with(
+            //     'warning','Cannot book Villa '.$idvilla.' from '.$start.' to '.$end.'. The date already booked. '
+            // );
 
-        // dd($idvilla);
+            return redirect("/book/".$idvilla)->with(
+                'warning', 'Cannot book Villa '.$idvilla.' from '.$start.' to '.$end.'. The date already booked.'
+            );
+        }
 
         return view('book.secondstep',[
             // 'name' => 'Villa '.$id,
@@ -113,17 +120,45 @@ class BookController extends Controller
             return redirect('/login');
         }
 
-        // dd(User::find(1)->books[0]->status);
+        $start = $request->checkinDate;
+        $end = $request->checkoutDate;
+        $nights = explode(' ',$request->selectNight)[0];
+        $idvilla = $request->idvilla;
+        $iduser = Auth::user()->id;
+        // dd($iduser);
 
+        // check weather the date is already booked
+        if(Book::numberOfBook($start, $end, $nights, $idvilla) > 0){
+            if (Book::numberOfBook($start, $end, $nights, $idvilla, $iduser) > 0){
+                $last_book = Book::where('user_id','=', $iduser)//->get();
+                    ->orderBy('created_at','desc')->limit(1)->get();
+                // dd($last_book[0]);
+                return view('book.finalstep', [
+                    'booking_number' => $last_book[0]->booking_number,
+                    'idvilla' => $idvilla
+                ]);
+            }
+            else {
+                // dd('sudah di book org lain');
+                return redirect(`/book/$idvilla`)->with(
+                    'warning', 'Cannot book Villa '.$idvilla.' from '.$start.' to '.$end.'. The date already booked by other person.'
+                );
+            }
+        }
+
+        
+        // preparing variable
         $start = date('Y-m-d',strtotime($request->checkinDate));
         $nights = explode(' ',$request->selectNight)[0];
         $end = date('Y-m-d',strtotime($request->checkoutDate));
         $idvilla = $request->idvilla;
         $iduser = Auth::user()->id;
-        // dd($start,$end);
-        // dd($request->idvilla);
-
+        // generate booking id
+        $booking_number = Book::generateBookingNumber();
+        
+        // input data
         $book = new Book();
+        $book->booking_number = $booking_number;
         $book->start_date = $start;
         $book->end_date = $end;
         $book->status = "Sent to admin";
@@ -136,7 +171,10 @@ class BookController extends Controller
 
 
 
-        return view('book.finalstep');
+        return view('book.finalstep', [
+            'book' => $book,
+            'idvilla' => $idvilla
+        ]);
     }
 
     /**

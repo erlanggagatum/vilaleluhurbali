@@ -19,12 +19,13 @@
             <b>Booking Number</b>
         </h6>
         <h4>
-            <b>FZ21-RIF20210901</b>
+            <b>{{$booking_number}}</b>
         </h4>
 
         <p class='mt-4'>
             Your order will be canceled if you didn't give a confirmation and came at the check in time.
         </p>
+        <a class="btn btn-primary" href="/my-books" role="button">See my Book</a>
     </div>
     
 </div>

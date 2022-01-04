@@ -4,6 +4,14 @@
 @section('content')
 <div class="container mt-4">
     <h3 class='mt-3'>Book</h3>
+    @if(session('warning'))
+    <div class="row">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Warning!</strong> {{@session('warning')}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+    @endif
     <div class="row">
         <div class="col text-center"><a href="{{url('/book/1')}}" role="button" class="btn @if(str_contains(Request::path(),'1'))active @endif btn-outline-primary d-block">Villa 1</a></div>
         <div class="col text-center"><a href="{{url('/book/2')}}" role="button" class="btn @if(str_contains(Request::path(),'2'))active @endif btn-outline-primary d-block">Villa 2</a></div>

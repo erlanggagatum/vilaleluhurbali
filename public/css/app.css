@@ -4548,6 +4548,13 @@ textarea.form-control-lg {
   color: #0f2522;
 }
 
+
+.alert-danger {
+    color: #132e2b;
+    background-color: rgba(var(--bs-warning-rgb), 0.5);
+    border-color: rgba(var(--bs-warning-rgb), 0.5);
+}
+
 @-webkit-keyframes progress-bar-stripes {
   0% {
     background-position-x: 1rem;
