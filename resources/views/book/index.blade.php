@@ -31,16 +31,20 @@
     <form method='get' action='/book/order/step2'>
     <!-- @csrf -->
     <div class="row mt-3">
-        <div class="col">
+        <div class="col-sm">
             <div class="mb-3">
-            <label for="checkinDate" class="form-label">Check-in</label>
-            <input type="text" class="form-control datepicker" id="checkinDate" name='checkinDate'aria-describedby="date">
-                <div id="date" class="form-text">
-                Date format: mm/dd/yyyy @error('checkinDate') <span class="badge bg-warning text-black">Please Choose Date</span>@enderror
+                <label for="checkinDate" class="form-label">Check-in</label>
+                <div class="input-group ">
+                    <!-- <button class="btn btn-outline-primary d-block input-group-append" type="button" id="checkinDate">Button</button> -->
+                    <input type="text" class="form-control datepicker" id="checkinDate" name='checkinDate'aria-describedby="date" readonly>
+                    
                 </div>
+                <div id="date" class="form-text">
+                    Date format: mm/dd/yyyy @error('checkinDate') <span class="badge bg-warning text-black">Please Choose Date</span>@enderror
+                </div>
+            </div>
         </div>
-        </div>
-        <div class="col">
+        <div class="col-sm">
         <div class="mb-3">
         <label for="selectNight" class="form-label">Stay</label>
         <select class="form-select" id='stay' name='selectNight'aria-label="Default select example">
@@ -54,7 +58,7 @@
             </select>
         </div>
         </div>
-        <div class="col">
+        <div class="col-sm">
         <div class="mb-3">
             <label for="checkoutDate" class="form-label">Check-out</label>
             <input type="text" class="form-control" id="checkoutDate" name='checkoutDate' readonly>
@@ -69,9 +73,12 @@
     <p>Rp2.000.000,00,- x <span id='num_nights'>0</span> nights</p>
     <p>Total: <b>Rp<span id='total_price'>0</span>,00,-</b></p>
     </div>
-    
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <div class="d-grid d-md-block-sm">
+        <button type="submit" class="btn btn-full btn-primary">Submit</button>
+    </div>
     </form>
+
+    
 
 
     
@@ -82,13 +89,20 @@
 <script>
 
     $(function() {
+        const booked_date = {!!json_encode($booked_date)!!}
+        const price = 0;
+        // console.log(JSON.parse(booked));
         function getStands(){
             var stands = $('#stay').val();
             return stands;
         }
         $(".datepicker").datepicker({
+            clearBtn: true,
             dateFormat: "yy-mm-dd",
             autoClose: true,
+            todayHighlight: true,
+            startDate: new Date().toLocaleDateString(),
+            datesDisabled: booked_date
         });
 
         $("#checkinDate").on('change',function(){

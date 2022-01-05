@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Villa;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class Book extends Model
 {
@@ -110,5 +111,30 @@ class Book extends Model
         $booking_number = strtoupper($startbooknum.$subname.$endbooknum);
      
         return $booking_number;
+    }
+    
+    // return array of date
+    public static function getBookedDate($idVilla){
+        
+        $booked_villa = Book::where('villa_id','=',$idVilla)
+            ->where('end_date','>',Carbon::now()->toDateString())
+            ->select('start_date','end_date')->get();
+        
+        $booked_date = array();
+        foreach ($booked_villa as $date) {
+            // put data in variable
+            $start_date = $date->start_date;
+            $end_date = $date->end_date;
+
+            // make into date range
+            $date_pointer = $start_date;
+            while($date_pointer < $end_date){
+                $booked_date[] = date('m/d/Y', strtotime($date_pointer));
+                $date_pointer = date('Y-m-d', strtotime($date_pointer.' + 1 day'));
+            }
+            
+        }
+        
+        return $booked_date;
     }
 }

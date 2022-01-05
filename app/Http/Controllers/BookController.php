@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Book;
 use App\Models\User;
 use App\Models\Villa;
+use Carbon\Carbon;
 
 class BookController extends Controller
 {
@@ -54,21 +55,33 @@ class BookController extends Controller
         // return view('book.index', ['name' => 'Samantha']);
         //
 
-        if($id == 1){
-            return view('book.index', ['name' => 'Villa 1', 'idvilla' => 1]);
-        }
-        if($id == 2){
-            return view('book.index', ['name' => 'Villa 2', 'idvilla' => 2]);
-        }
-        if($id == 3){
-            return view('book.index', ['name' => 'Villa 3', 'idvilla' => 3]);
-        }
-        if($id == 4){
-            return view('book.index', ['name' => 'Villa 3', 'idvilla' => 3]);
+
+        $view = 'book.index';
+        $villa_data = array();
+
+        // fixed number of villa
+        if(in_array($id, [1,2,3,4])){
+            $villa_data = ['name' => `Villa $id`, 'idvilla' => $id];
+            $selected_villa_id = $id;
         }
         else {
-            return redirect('/book/1');
+            $villa_data = ['name' => `Villa 1`, 'idvilla' => 1];
+            $selected_villa_id = $id;
         }
+
+        $villa = Villa::findOrFail($selected_villa_id);
+
+        $booked_date = Book::getBookedDate($selected_villa_id);
+
+        $villa_data['booked_date'] = $booked_date;
+        $villa_date['price'] = $villa->price;
+        // dd();    
+
+        // dd($booked_date);
+
+        // dd($villa_data);
+        // dd($villa_data);
+        return view($view, $villa_data);
     }
 
 
@@ -97,10 +110,6 @@ class BookController extends Controller
 
         $num_booked = Book::numberOfBook($start, $end, $nights, $idvilla);
         if($num_booked != 0){
-            // return redirect(`book/$idvilla`)->with(
-            //     'warning','Cannot book Villa '.$idvilla.' from '.$start.' to '.$end.'. The date already booked. '
-            // );
-
             return redirect("/book/".$idvilla)->with(
                 'warning', 'Cannot book Villa '.$idvilla.' from '.$start.' to '.$end.'. The date already booked.'
             );
@@ -172,7 +181,7 @@ class BookController extends Controller
 
 
         return view('book.finalstep', [
-            'book' => $book,
+            'booking_number' => $book->booking_number,
             'idvilla' => $idvilla
         ]);
     }
