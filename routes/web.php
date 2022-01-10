@@ -27,15 +27,17 @@ Route::get('/', function () {
     return view('home.home');
 });
 
-Auth::routes();
+Auth::routes(['verify'=>true]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // book
 Route::get('/book', [BookController::class, 'index'])->name('book');
-Route::get('/book/{id}', [BookController::class, 'show'])->name('book.villa1');
-Route::get('/book/order/step2', [BookController::class, 'secondStep'])->name('book.step2');
-Route::post('/book/order/final', [BookController::class, 'finalStep'])->name('book.final');
+Route::get('/book/{id}', [BookController::class, 'show'])->name('book.villa');
+Route::middleware(['verified'])->group(function(){
+    Route::get('/book/order/step2', [BookController::class, 'secondStep'])->name('book.step2');
+    Route::post('/book/order/final', [BookController::class, 'finalStep'])->name('book.final');
+});
 
 // mybook
 Route::get('/my-books', [MyBookController::class, 'index'])->name('mybook');
@@ -51,6 +53,12 @@ Route::group(['prefix'=>'admin', 'as'=>'admin.', 'middleware'=>'admin'] ,functio
     // Ongoing
     Route::get('/ongoing', [OngoingController::class,'index'])->name('ongoing');
     Route::get('/ongoing/{id}', [OngoingController::class,'show'])->name('ongoing.show');
+    Route::delete('/ongoing/{id}', [OngoingController::class,'destroy'])->name('ongoing.destroy');
     Route::post('/ongoing/update/{id}', [OngoingController::class,'update'])->name('ongoing.update');
 
+});
+
+
+Route::get('/mail', function(){
+    return view('email.invoice');
 });

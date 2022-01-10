@@ -1,6 +1,5 @@
 @extends('layouts.app')
 
-
 @section('content')
 <div class="container mt-4">
     <h3 class='mt-3'>Book</h3>
@@ -70,8 +69,8 @@
     <div class="mb-3">
 
     <h4>Total</h4>
-    <p>Rp2.000.000,00,- x <span id='num_nights'>0</span> nights</p>
-    <p>Total: <b>Rp<span id='total_price'>0</span>,00,-</b></p>
+    <p><span id="price">2.000.000,00</span>,- x <span id='num_nights'>1</span> nights</p>
+    <p>Total: <b><span id='grand_total'>0</span>,-</b></p>
     </div>
     <div class="d-grid d-md-block-sm">
         <button type="submit" class="btn btn-full btn-primary">Submit</button>
@@ -90,7 +89,17 @@
 
     $(function() {
         const booked_date = {!!json_encode($booked_date)!!}
-        const price = 0;
+        const villaPrice = {{($price)}}
+        var nights = 1
+
+        renderGrandTotal()
+
+        // $('#price').text(formatter.format([villaPrice]));
+        // render()
+        
+
+        // console.log(villaPrice)
+
         // console.log(JSON.parse(booked));
         function getStands(){
             var stands = $('#stay').val();
@@ -111,6 +120,7 @@
 
         $("#stay").on('change',function(){
             renderCheckout();
+            renderGrandTotal()
         });
 
         function renderCheckout(){
@@ -123,6 +133,20 @@
             var outDateString = (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear()
             $('#checkoutDate').val(outDateString)
         }
+
+        function renderGrandTotal(){
+            var nights = parseInt(getStands())
+            var price = villaPrice
+
+            console.log(nights)
+
+            var grandTotal = price * nights
+
+            $('#price').text(formatter.format([villaPrice]))
+            $('#grand_total').text(formatter.format([grandTotal]))
+            $('#num_nights').text(nights)
+        }
+
     });
 
 </script>

@@ -11,6 +11,7 @@ use Carbon\Carbon;
 
 class BookController extends Controller
 {
+    
     /**
      * Display a listing of the resource.
      *
@@ -51,10 +52,16 @@ class BookController extends Controller
      */
     public function show($id)
     {
+        // $dt = $this->sendEmail();
+        // dd($dt);
+
+        // return view('email.invoice', $dt);
         // dd(Book::generateBookingNumber());
         // return view('book.index', ['name' => 'Samantha']);
         //
+        // dd($this->sendEmail());
 
+        // return view('email.invoice',$this->sendInvoice());
 
         $view = 'book.index';
         $villa_data = array();
@@ -74,11 +81,12 @@ class BookController extends Controller
         $booked_date = Book::getBookedDate($selected_villa_id);
 
         $villa_data['booked_date'] = $booked_date;
-        $villa_date['price'] = $villa->price;
+        $villa_data['price'] = $villa->price;
         // dd();    
 
         // dd($booked_date);
 
+        // dd($villa_data);
         // dd($villa_data);
         // dd($villa_data);
         return view($view, $villa_data);
@@ -99,13 +107,14 @@ class BookController extends Controller
             'checkinDate'=>'required|date',
             'selectNight'=>'required',
             'checkoutDate'=>'required|date',
-            'idvilla'=>'required',
+            'idvilla'=>'required|in:1,2,3,4',
         ]);
 
         $start = $request->checkinDate;
         $nights = $request->selectNight;
         $end = $request->checkoutDate;
         $idvilla = $request->idvilla;
+        
 
 
         $num_booked = Book::numberOfBook($start, $end, $nights, $idvilla);
@@ -115,12 +124,18 @@ class BookController extends Controller
             );
         }
 
+        $price = 2000000;
+        if($villa = Villa::findOrFail($request->idvilla)){
+            $price = $villa->price;
+        }
+
         return view('book.secondstep',[
             // 'name' => 'Villa '.$id,
             'start' => $start,
             'end' => $end,
             'nights' => $nights,
             'idvilla' => $idvilla,
+            'price' => $price
         ]);
     }
 
@@ -128,6 +143,18 @@ class BookController extends Controller
         if(!Auth::user()){
             return redirect('/login');
         }
+
+        // $email_status = $this->sendInvoice();
+        // // check
+        // return view('email.invoice',$email_status);
+        
+        $validate = $request->validate([
+            'checkinDate'=>'required|date',
+            'selectNight'=>'required',
+            'checkoutDate'=>'required|date',
+            'idvilla'=>'required|in:1,2,3,4',
+            'g-recaptcha-response' => 'recaptcha|required',
+        ]);
 
         $start = $request->checkinDate;
         $end = $request->checkoutDate;
@@ -176,13 +203,18 @@ class BookController extends Controller
         $book->villa_id = $idvilla;
         $book->nights = $nights;
 
-        $book->save();
+        if(!$book->save()){
+            return redirect(`/book/$idvilla`)->with(
+                'warning', 'Cannot book Villa '.$idvilla.' from '.$start.' to '.$end.'. There is an error while processing your book.'
+            );
+        }
 
-
+        $email_status = $this->sendInvoice($book->booking_number);
 
         return view('book.finalstep', [
             'booking_number' => $book->booking_number,
-            'idvilla' => $idvilla
+            'idvilla' => $idvilla,
+            'email_status' => $email_status == true ? 'Invoice has been sent to your email!' : 'System failed to sent an Invoice email to you, please contact admin for future assistance'
         ]);
     }
 

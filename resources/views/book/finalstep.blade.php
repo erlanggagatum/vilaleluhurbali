@@ -26,6 +26,10 @@
             Your order will be canceled if you didn't give a confirmation and came at the check in time.
         </p>
         <a class="btn btn-primary" href="/my-books" role="button">See my Book</a>
+
+        <p class="mt-4">
+            <i>{{$email_status}}</i>
+        </p>
     </div>
     
 </div>

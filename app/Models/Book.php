@@ -115,7 +115,9 @@ class Book extends Model
     
     // return array of date
     public static function getBookedDate($idVilla){
-        
+
+        // $booking = Book::all();
+
         $booked_villa = Book::where('villa_id','=',$idVilla)
             ->where('end_date','>',Carbon::now()->toDateString())
             ->select('start_date','end_date')->get();
@@ -137,4 +139,10 @@ class Book extends Model
         
         return $booked_date;
     }
+
+    public function calculateGrandTotal(){
+        return $this->nights * $this->villa->price;
+    }
+
+
 }

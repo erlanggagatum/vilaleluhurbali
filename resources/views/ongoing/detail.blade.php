@@ -3,7 +3,7 @@
 @section('content')
 <div class="container mt-4">
     
-    <h3 class='mt-3'>Booking Summary for Villa xx
+    <h3 class='mt-3'>Booking Summary for {{$book->villa->name}}
     </h3>
 
     @if($msg = Session::get('success'))  
@@ -40,11 +40,16 @@
             <span class="badge rounded-pill bg-primary">Checkin</span>
         </h4> 
         <p>Wait until customer arrived at the villa</p>
+        @elseif($book->status == 'At villa')
+        <h4>
+            <span class="badge rounded-pill bg-success text-dark">At villa</span>
+        </h4> 
+        <p>Customer at the villa</p>
         @else
         <h4>
             <span class="badge rounded-pill bg-success text-dark">Completed</span>
         </h4> 
-        <p>Customer already stayed at villa</p>
+        <p>Customer checked out</p>
         @endif
     </div>
     
@@ -107,36 +112,69 @@
 
     <div class="mb-3">
 
-    <h5><b>Price</b></h5>
-    <p>Rp200.000,00,- x 4 nights</p>
-    <p>Total: <b>Rp800.000,00,-</b></p>
-    </div>
+    <h5><strong>Total</strong></h5>
+    <p><span id="price">2.000.000,00</span>,- x <span id='num_nights'>1</span> nights</p>
+    <p>Total: <b><span id='grand_total'>0</span>,-</b></p>
+
+    @if($book->status != 'Completed')
     <div class='my-3'>
         <form action="{{url('/admin/ongoing/update', $book->id)}}" method='post'>
             @csrf
-            <!-- <div class="form-check"> -->
-                <input class="form-check-input" name='security_checkbox' type="checkbox" value="" id="security_checkbox">
-                <label class="form-check-label" for="security_checkbox">
-                @if($book->status == 'Sent to admin')
-                    I have confirmed the book with the respective customer
-                @elseif($book->status == 'Waiting for payment')
-                    I have confirmed the book's payment with the respective customer
-                @elseif($book->status == 'Waiting for checkin')
-                    I have confirmed that the customer has arrived and stayed at the villa
-                @endif
-                </label>
-            <!-- </div>/ -->
+                <div class="d-flex">
+                    <input style='min-width: 15px' class="form-check-input" name='security_checkbox' type="checkbox" value="" id="security_checkbox">
+                    <label class="form-check-label mx-2" for="security_checkbox">
+                    @if($book->status == 'Sent to admin')
+                        I have confirmed the book with the respective customer
+                    @elseif($book->status == 'Waiting for payment')
+                        I have confirmed the book's payment with the respective customer
+                    @elseif($book->status == 'Waiting for checkin')
+                        I have confirmed that the customer has arrived and stayed at the villa
+                    @elseif($book->status == 'At villa')
+                        I have confirmed that the customer has stayed at the villa and going to checkout. After this, the book will be completed and cannot be modified.
+                    @endif
+                    </label>
+                </div>
             
             <div class="my-3">
-            <button type="submit" class="btn btn-primary">Confirm Reservation</button>
+                <button type="submit" class="btn btn-primary">Confirm Reservation</button>
+                <button data-bs-toggle="modal" data-bs-target="#deleteModal" type='button' class="btn btn-outlined-secondary mx-1 ">Delete</button>
             </div>
         </form>
     </div>
-    
-
-
+    @endif
 
     
+
+
+
+    
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="deleteModalLabel">Delete</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            Are you sure want to <strong>permanently delete</strong> {{$book->user->first_name}} {{$book->user->last_name}}'s book
+            at {{$book->villa->name}} from {{$book->start_date}} to {{$book->end_date}}. <br>
+            
+        </div>
+        <div class="modal-footer">
+        <form action="{{url('/admin/ongoing/').'/'.$book->id}}" method="post">
+            @method('DELETE')
+            @csrf
+            <button type="submit" class="btn btn-primary">Delete</button>
+        </form>
+            
+            <!-- <a href="" class="btn btn-primary" role='button'>Delete</a> -->
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+        </div>
+    </div>
 </div>
 @endsection
 
@@ -144,6 +182,14 @@
 <script>
 
     $(function() {
+        
+        const villaPrice = {{($book->villa->price)}}
+        const nights = {{$book->nights}}
+
+        $('#price').text(formatter.format(villaPrice))
+        $('#num_nights').text(nights)
+        $('#grand_total').text(formatter.format(villaPrice * nights))
+        
     });
 
 </script>
