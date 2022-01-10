@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('head')
+{!! ReCaptcha::htmlScriptTagJsApi() !!}
+@endsection
+
 @section('content')
 <div class="container mt-4">
     <h3 class='mt-3'>Booking Summary for
@@ -68,12 +72,29 @@
 
     <div class="mb-3">
 
-    <h5><b>Price</b></h5>
-    <p>Rp200.000,00,- x 4 nights</p>
-    <p>Total: <b>Rp800.000,00,-</b></p>
+    <h4>Total</h4>
+    <p><span id="price">2.000.000,00</span>,- x <span id='num_nights'>1</span> nights</p>
+    <p>Total: <b><span id='grand_total'>0</span>,-</b></p>
+
+    </div>
+
+    <div class="row">
+        <div class="col mb-3">
+            {!! htmlFormSnippet() !!}
+            
+            @if($errors->has('g-recaptcha-response'))
+                <i class='text-danger'>*Please fill the captcha challange!</i>
+            @endif
+        </div>
     </div>
     
-    <button type="submit" class="btn btn-primary">Confirm my Reservation</button>
+    <div class="row">
+        <div class="col mb-5">
+            <button type="submit" class="btn btn-primary">Confirm my Reservation</button>
+        </div>
+        
+    </div>
+    
     </form>
 
 
@@ -85,6 +106,13 @@
 <script>
 
     $(function() {
+        const villaPrice = {{($price)}}
+        const nights = {{$nights}}
+
+        $('#price').text(formatter.format(villaPrice))
+        $('#num_nights').text(nights)
+        $('#grand_total').text(formatter.format(villaPrice * nights))
+        
     });
 
 </script>

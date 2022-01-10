@@ -11,6 +11,7 @@
         <table id='books' class="table table-striped">
             <thead>
                 <tr>
+                    <th>No</th>
                     <th>Location</th>
                     <th>Start Date (y/m/d)</th>
                     <th>End Date (y/m/d)</th>
@@ -23,6 +24,7 @@
             <tbody>
                 @foreach($books as $book)
                     <tr>
+                        <td>{{$loop->index + 1}}</td>
                         <td>{{$book->getVilla()->name}}</td>
                         <td>{{$book->start_date}}</td>
                         <td>{{$book->end_date}}</td>
@@ -47,7 +49,9 @@
 <script>
 
 $(document).ready( function () {
-    $('#books').DataTable();
+    $('#books').DataTable({
+        // "ordering": false
+    });
 } );
 </script>
 @endsection

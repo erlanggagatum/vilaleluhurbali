@@ -26,6 +26,7 @@
     <!-- Datepicker -->
     <link rel="stylesheet" href="{{asset('plugin\datepicker\dist\css\bootstrap-datepicker.min.css')}}">
 
+    @yield('head')
 </head>
 
 <body>
@@ -116,6 +117,13 @@
 
 
 <script type="text/javascript" src="{{asset('plugin\datepicker\dist\js\bootstrap-datepicker.js')}}"></script>  
-
+<script>
+    var formatter = new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        minimumFractionDigits: 2,
+    });
+    console.log(formatter.format(20000000))
+</script>
 @yield('script')
 </html>

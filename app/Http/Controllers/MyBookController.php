@@ -15,7 +15,9 @@ class MyBookController extends Controller
      */
     public function index()
     {
-        $books = Book::where('user_id', Auth::user()->id)->get();
+        $books = Book::where('user_id', Auth::user()->id)
+            ->orderBy('created_at','desc')
+            ->get();
         // dd($books);
         //
         return view('mybook.index',[
