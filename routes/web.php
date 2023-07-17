@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Auth;
 
 // User controller
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\ContactUsController;
+use App\Http\Controllers\FeaturesController;
 use App\Http\Controllers\MyBookController;
 
 
@@ -29,7 +31,11 @@ Route::get('/', function () {
 
 Auth::routes(['verify'=>true]);
 
+// home
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+// contact us
+Route::get('/contact-us', [ContactUsController::class, 'index'])->name('contact-us');
 
 // book
 Route::get('/book', [BookController::class, 'index'])->name('book');
@@ -39,6 +45,9 @@ Route::middleware(['verified'])->group(function(){
     Route::post('/book/order/final', [BookController::class, 'finalStep'])->name('book.final');
 });
 
+// features
+Route::get('/features',[FeaturesController::class, 'index'])->name('features.index');
+
 // mybook
 Route::get('/my-books', [MyBookController::class, 'index'])->name('mybook');
 
@@ -47,9 +56,9 @@ Route::group(['prefix'=>'admin', 'as'=>'admin.', 'middleware'=>'admin'] ,functio
     // Route::get('/dashboard', [BookController::class,'index'])->name('book');
     // Route::get('/order', [BookController::class,'index'])->name('book');
 
-    
+
     Route::get('/history', [HistoryController::class,'index'])->name('history');
-    
+
     // Ongoing
     Route::get('/ongoing', [OngoingController::class,'index'])->name('ongoing');
     Route::get('/ongoing/{id}', [OngoingController::class,'show'])->name('ongoing.show');

@@ -17,8 +17,8 @@
         <div class="col text-center"><a href="{{url('/book/3')}}" role="button" class="btn @if(str_contains(Request::path(),'3'))active @endif btn-outline-primary d-block">Villa 3</a></div>
         <div class="col text-center"><a href="{{url('/book/4')}}" role="button" class="btn @if(str_contains(Request::path(),'4'))active @endif btn-outline-primary d-block">Villa 4</a></div>
     </div>
-    
-    
+
+
     @if(isset($name))
     <div class="mt-3">
         <h4 mt-3>{{$name}}</h4>
@@ -36,7 +36,7 @@
                 <div class="input-group ">
                     <!-- <button class="btn btn-outline-primary d-block input-group-append" type="button" id="checkinDate">Button</button> -->
                     <input type="text" class="form-control datepicker" id="checkinDate" name='checkinDate'aria-describedby="date" readonly>
-                    
+
                 </div>
                 <div id="date" class="form-text">
                     Date format: mm/dd/yyyy @error('checkinDate') <span class="badge bg-warning text-black">Please Choose Date</span>@enderror
@@ -72,15 +72,15 @@
     <p><span id="price">2.000.000,00</span>,- x <span id='num_nights'>1</span> nights</p>
     <p>Total: <b><span id='grand_total'>0</span>,-</b></p>
     </div>
-    <div class="d-grid d-md-block-sm">
+    <div class="d-grid d-md-block-sm mb-5">
         <button type="submit" class="btn btn-full btn-primary">Submit</button>
     </div>
     </form>
 
-    
 
 
-    
+
+
 </div>
 @endsection
 
@@ -96,7 +96,7 @@
 
         // $('#price').text(formatter.format([villaPrice]));
         // render()
-        
+
 
         // console.log(villaPrice)
 
@@ -127,7 +127,7 @@
             var selDate = $("#checkinDate").val();
             var d = new Date(selDate.split("/")[2],selDate.split("/")[0]-1,selDate.split("/")[1])
             var stands = parseInt(getStands())
-            
+
             // alert(stands)
             d.setDate(d.getDate() + stands);
             var outDateString = (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear()
