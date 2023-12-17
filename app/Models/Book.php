@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Villa;
@@ -12,7 +13,8 @@ use Carbon\Carbon;
 class Book extends Model
 {
     use HasFactory;
-    
+    use SoftDeletes;
+
     protected $fillable = [
         'start_date',
         'end_date',
@@ -52,7 +54,7 @@ class Book extends Model
         // calculate below and upper boundaries of the book (max 7 days)
         $below = date('Y-m-d', strtotime($start_ymd." - 6 days"));
         $upper = date('Y-m-d', strtotime($end_ymd." + 6 days"));
-        
+
         // finding intersect date
         $num_booked = Book::where('status','!=','Completed')
             ->whereBetween('start_date',[$below,$upper])->get()
@@ -67,7 +69,7 @@ class Book extends Model
         return $num_booked->count();
 
 
-        
+
         /* Old
         $start_ymd = date('Y-m-d',strtotime($start));
         $end_ymd = date('Y-m-d',strtotime($end));
@@ -87,7 +89,7 @@ class Book extends Model
 
     public static function generateBookingNumber(){
         $booking_number = 'AAAAAAAAAAAA';
-        
+
         $user = Auth::user();
 
         // dd($user);
@@ -103,16 +105,16 @@ class Book extends Model
         else {
             $subname = (substr($user->first_name, 0, strlen($user->first_name)/2));
         }
-        
+
         // end code
         $endbooknum = date('ymd').strtoupper(substr(md5(microtime()),rand(0,26),3));
 
         // combined booking code
         $booking_number = strtoupper($startbooknum.$subname.$endbooknum);
-     
+
         return $booking_number;
     }
-    
+
     // return array of date
     public static function getBookedDate($idVilla){
 
@@ -121,7 +123,7 @@ class Book extends Model
         $booked_villa = Book::where('villa_id','=',$idVilla)
             ->where('end_date','>',Carbon::now()->toDateString())
             ->select('start_date','end_date')->get();
-        
+
         $booked_date = array();
         foreach ($booked_villa as $date) {
             // put data in variable
@@ -134,9 +136,9 @@ class Book extends Model
                 $booked_date[] = date('m/d/Y', strtotime($date_pointer));
                 $date_pointer = date('Y-m-d', strtotime($date_pointer.' + 1 day'));
             }
-            
+
         }
-        
+
         return $booked_date;
     }
 
