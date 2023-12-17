@@ -2,17 +2,20 @@
 
 @section('content')
 <div class="container mt-4">
-    
-    
-    @if($msg = Session::get('success'))  
+
+
+
+
+    @if($msg = Session::get('success'))
     <div class="alert bg-success alert-dismissible fade show" role="alert">
-        <strong>Success deleting record!</strong> 
+        <strong>Success deleting record!</strong>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     @endif
-    
+
     <h1 >Ongoing Books</h1>
-    
+
+
     <!-- new books -->
     <h3 class="mt-3">
         <b>New Books</b>
@@ -53,10 +56,10 @@
 
 
     <!-- waiting for payment -->
-    
+
     <h3 class="mt-3">
         <b>Waiting for Payment</b>
-        
+
         @if($books->where('status','=','Waiting for payment')->count() > 0)
         <span class="badge rounded-pill bg-warning text-dark">
             {{$books->where('status','=','Waiting for payment')->count()}}
@@ -78,13 +81,19 @@
             <tbody>
                 @foreach($books as $book)
                 @if($book->status=='Waiting for payment')
-                <tr>
+                    @if($book->updated_at < \Carbon\Carbon::now()->subHour(1))
+                    <tr class="table-danger">
+                    @else
+                    <tr>
+                    @endif
+                    <!-- <td>{{$book->updated_at}}</td>
+                    <td>{{\Carbon\Carbon::now()}}</td> -->
                     <td>{{$book->getUser()->first_name}}</td>
                     <td>{{$book->getUser()->last_name}}</td>
                     <td>{{$book->start_date}}</td>
                     <td>{{$book->end_date}}</td>
                     <td><a class="btn btn-primary" href="{{url('/admin/ongoing/').'/'.$book->id}}" role="button">Detail</a></td>
-                </tr>
+                    </tr>
                 @endif
                 @endforeach
             </tbody>
@@ -94,10 +103,10 @@
 
 
     <!-- waiting for payment -->
-    
+
     <h3 class="mt-3">
         <b>Waiting for Checkin</b>
-        
+
         @if($books->where('status','=','Waiting for checkin')->count() > 0)
         <span class="badge rounded-pill bg-warning text-dark">
             {{$books->where('status','=','Waiting for checkin')->count()}}
@@ -119,6 +128,7 @@
             <tbody>
                 @foreach($books as $book)
                 @if($book->status=='Waiting for checkin')
+
                 <tr>
                     <td>{{$book->getUser()->first_name}}</td>
                     <td>{{$book->getUser()->last_name}}</td>
@@ -134,10 +144,10 @@
     </div>
 
     <!-- at villa -->
-    
+
     <h3 class="mt-3">
         <b>Customers at Villa</b>
-        
+
         @if($books->where('status','=','At villa')->count() > 0)
         <span class="badge rounded-pill bg-warning text-dark">
             {{$books->where('status','=','At villa')->count()}}

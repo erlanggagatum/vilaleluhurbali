@@ -15,6 +15,7 @@ class OngoingController extends Controller
      */
     public function index()
     {
+        // dd(Carbon::now('GMT+8')->subHour(2));
         //
         return view('ongoing.index', [
             'books' => Book::where('end_date', '>=',Carbon::now()->toDateString())

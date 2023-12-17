@@ -55,7 +55,7 @@ class Controller extends BaseController
         $send = Mail::send('email.invoice', $data, function($message)
             use($to_name, $to_email, $to_admin_name, $to_admin_email){
             $message->to($to_email, $to_name)
-                ->subject('Invoice Test Mail');
+                ->subject('Invoice Notification Mail');
                 // untuk title
                 //->from('ergatumwork@gmail.com','Gatum Erlangga Test Mail Laravel');
         });
