@@ -16,6 +16,7 @@
                 </tr>
             </thead>
             <tbody>
+                <!-- {{$books}} -->
                 @foreach($books as $book)
                 <tr>
                     <td>{{$book->getUser()->first_name}}</td>
@@ -36,7 +37,9 @@
 <script>
 
 $(document).ready( function () {
-    $('#history').DataTable();
+    $('#history').DataTable({
+        order: [[2, 'desc']]
+    });
 } );
 </script>
 @endsection

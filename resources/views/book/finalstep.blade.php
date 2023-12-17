@@ -4,7 +4,7 @@
 <div class="container mt-4">
 
     <div class="text-center">
-        
+
         <h3 class='mt-3'>
             <b>Congratulation!</b>
         </h3>
@@ -18,6 +18,7 @@
         <h6 class='mt-4'>
             <b>Booking Number</b>
         </h6>
+
         <h4>
             <b>{{$booking_number}}</b>
         </h4>
@@ -31,7 +32,7 @@
             <i>{{$email_status}}</i>
         </p>
     </div>
-    
+
 </div>
 @endsection
 

@@ -116,9 +116,9 @@ class OngoingController extends Controller
             if($book->save()){
                 return back()->with('success','Your changes have been saved! New status: '.$new_status);
             }
-            
+
             return back()->with('warning','Data can\'t be saved');
-            
+
         }
         return back()->with('warning','Please make sure you have checked the checkbox below!');
         //
@@ -132,7 +132,10 @@ class OngoingController extends Controller
      */
     public function destroy($id)
     {
-        if(Book::destroy($id)){
+        $book = Book::findOrFail($id);
+        $book->status = 'Cancelled';
+
+        if($book->save() && Book::destroy($id)){
             return redirect('/admin/ongoing')->with(
                 'succes_delete_book', 'Success deleting record!'
             );
@@ -141,7 +144,5 @@ class OngoingController extends Controller
                 'warning', 'Cannot delete book record.'
             );
         }
-        // dd('wow');
-        //
     }
 }

@@ -12,7 +12,7 @@
     <b>Villa {{$idvilla}}</b>
     @endif
     </h3>
-    
+
     <div class="mt-3">
         <h5 class='mb-3 text-heavy'><b>Personal Information</b></h5>
         <div class="row">
@@ -81,24 +81,24 @@
     <div class="row">
         <div class="col mb-3">
             {!! htmlFormSnippet() !!}
-            
+
             @if($errors->has('g-recaptcha-response'))
                 <i class='text-danger'>*Please fill the captcha challange!</i>
             @endif
         </div>
     </div>
-    
+
     <div class="row">
         <div class="col mb-5">
             <button type="submit" class="btn btn-primary">Confirm my Reservation</button>
         </div>
-        
+
     </div>
-    
+
     </form>
 
 
-    
+
 </div>
 @endsection
 
@@ -112,7 +112,7 @@
         $('#price').text(formatter.format(villaPrice))
         $('#num_nights').text(nights)
         $('#grand_total').text(formatter.format(villaPrice * nights))
-        
+
     });
 
 </script>

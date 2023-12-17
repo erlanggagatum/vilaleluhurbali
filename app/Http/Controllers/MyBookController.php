@@ -15,8 +15,9 @@ class MyBookController extends Controller
      */
     public function index()
     {
-        $books = Book::where('user_id', Auth::user()->id)
-            ->orderBy('created_at','desc')
+        $books = Book::withTrashed()
+            ->where('user_id', Auth::user()->id)
+            ->orderBy('start_date','desc')
             ->get();
         // dd($books);
         //

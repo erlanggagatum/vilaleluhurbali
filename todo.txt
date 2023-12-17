@@ -1,0 +1,3 @@
+[v] Soft delete and history
+[#] Timer after checkout
+[#] Admin to change vila information

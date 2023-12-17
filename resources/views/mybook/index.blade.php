@@ -3,7 +3,7 @@
 @section('content')
 <div class="container mt-4">
     <h1 >My Books</h1>
-    
+
     <!-- books history -->
     <h3 class="mt-3"><b>Booking List History</b></h3>
     <div class="card">
@@ -29,8 +29,18 @@
                         <td>{{$book->start_date}}</td>
                         <td>{{$book->end_date}}</td>
                         <td>{{$book->nights}}</td>
-                        <td><span class="badge bg-info">
-                            {{$book->status}}</span></td>
+                        <td>
+                            @if ($book->status == 'Cancelled')
+                                <span class="badge bg-danger">
+                                {{$book->status}}</span>
+                            @elseif ($book->status != 'Completed')
+                                <span class="badge bg-info">
+                                {{$book->status}}</span>
+                            @else
+                                <span class="badge bg-success">
+                                {{$book->status}}</span>
+                            @endif
+                        </td>
                         <td>{{$book->status_detail}}</td>
                     </tr>
                 @endforeach
@@ -50,6 +60,7 @@
 
 $(document).ready( function () {
     $('#books').DataTable({
+        order: [[2, 'desc']]
         // "ordering": false
     });
 } );

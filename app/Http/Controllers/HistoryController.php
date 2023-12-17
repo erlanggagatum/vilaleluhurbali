@@ -15,12 +15,13 @@ class HistoryController extends Controller
     public function index()
     {
         // dd(Book::all());'
-        
+
         // dd(Book::all()[0]->user()->first_name);
         // dd(Book::all()[0]->getUser()->first_name);
         //
+        // dd(Book::withTrashed()->orderBy('start_date', 'desc')->get());
         return view('history.index',[
-            'books' => Book::all(), 
+            'books' => Book::withTrashed()->orderBy('start_date', 'desc')->get(),
         ]);
     }
 
